@@ -24,8 +24,8 @@ export default function InfluencerLogin() {
       setLoading(true);
 
       const endpoint = isRegister
-        ? "http://localhost:5000/api/auth/register"
-        : "http://localhost:5000/api/auth/login";
+        ? `${import.meta.env.VITE_API_URL}/auth/register`||"http://localhost:5000/api/auth/register"
+        : `${import.meta.env.VITE_API_URL}/auth/login`||"http://localhost:5000/api/auth/login";
 
       const bodyData = isRegister
         ? { name, email, password, role: "influencer" }

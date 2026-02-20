@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io(import.meta.env.VITE_API_URL || "http://localhost:5000");
 
 export const MessageContext = createContext();
 
@@ -41,7 +41,7 @@ export function MessageProvider({ children }) {
 
   const fetchConversations = async () => {
     const res = await fetch(
-      "http://localhost:5000/api/messages/conversations/all",
+      `${import.meta.env.VITE_API_URL}/messages/conversations/all`||"http://localhost:5000/api/messages/conversations/all",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -52,7 +52,7 @@ export function MessageProvider({ children }) {
 
   const fetchMessages = async (receiverId) => {
     const res = await fetch(
-      `http://localhost:5000/api/messages/${receiverId}`,
+      `${import.meta.env.VITE_API_URL}/messages/${receiverId}`||`http://localhost:5000/api/messages/${receiverId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -62,7 +62,7 @@ export function MessageProvider({ children }) {
   };
 
   const sendMessage = async (receiverId, text) => {
-    const res = await fetch("http://localhost:5000/api/messages", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/messages`||"http://localhost:5000/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

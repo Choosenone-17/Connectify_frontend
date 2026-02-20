@@ -49,7 +49,7 @@ export default function Profile() {
       }
 
       const res = await fetch(
-        "http://localhost:5000/api/users/update-profile",
+        `${import.meta.env.VITE_API_URL}/users/update-profile`||"http://localhost:5000/api/users/update-profile",
         {
           method: "PUT",
           headers: {

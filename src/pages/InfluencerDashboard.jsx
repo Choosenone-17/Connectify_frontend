@@ -20,7 +20,7 @@ export default function InfluencerDashboard() {
     const fetchBrands = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/users/brand",
+          "http://localhost:5000/api/users/brand"||`${import.meta.env.VITE_API_URL}/users/brand`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

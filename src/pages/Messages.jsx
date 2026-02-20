@@ -28,7 +28,7 @@ export default function Messages() {
   useEffect(() => {
     if (!user?.id) return;
 
-    fetch(`http://localhost:5000/api/messages/conversations/${user.id}`)
+    fetch(`http://localhost:5000/api/messages/conversations/${user.id}`||`${import.meta.env.VITE_API_URL}/messages/conversations/${user.id}`)
       .then(res => res.json())
       .then(data => {
         console.log("CONVERSATIONS:", data);
@@ -44,7 +44,7 @@ export default function Messages() {
     if (!selectedUser?.id || !user?.id) return;
 
     fetch(
-      `http://localhost:5000/api/messages/conversation/${user.id}/${selectedUser.id}`
+      `http://localhost:5000/api/messages/conversation/${user.id}/${selectedUser.id}`||`${import.meta.env.VITE_API_URL}/messages/conversation/${user.id}/${selectedUser.id}`
     )
       .then(res => res.json())
       .then(data => {
@@ -61,7 +61,7 @@ export default function Messages() {
     if (!newMessage.trim()) return;
     if (!selectedUser?.id) return;
 
-    const res = await fetch("http://localhost:5000/api/messages", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/messages`||"http://localhost:5000/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
