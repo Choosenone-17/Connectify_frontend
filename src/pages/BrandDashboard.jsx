@@ -58,7 +58,7 @@ export default function BrandDashboard() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {influencers.map((inf) => (
             <motion.div
-              key={inf._id}
+              key={inf.id}
               whileHover={{ y: -8 }}
               className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl overflow-hidden transition"
             >

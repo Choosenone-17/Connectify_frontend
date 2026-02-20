@@ -59,7 +59,7 @@ export default function InfluencerDashboard() {
         <div className="grid md:grid-cols-2 gap-8">
           {brands.map((brand) => (
             <motion.div
-              key={brand._id}
+              key={brand.id}
               whileHover={{ scale: 1.03 }}
               className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6"
             >
