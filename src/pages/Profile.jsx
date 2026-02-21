@@ -2,23 +2,34 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 
 export default function Profile() {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
   const token = localStorage.getItem("token");
 
-  const [name, setName] = useState(storedUser.name);
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+  const [name, setName] = useState(storedUser.name || "");
   const [bio, setBio] = useState(storedUser.bio || "");
-  const [role, setRole] = useState(storedUser.role);
-  const [profilePic, setProfilePic] = useState(storedUser.profilePic || "");
+  const [role, setRole] = useState(storedUser.role || "brand");
+  const [profilePic, setProfilePic] = useState(
+    storedUser.profilePic || ""
+  );
   const [imageFile, setImageFile] = useState(null);
 
   // 🔥 Influencer fields
-  const [followers, setFollowers] = useState(storedUser.followers || 0);
+  const [followers, setFollowers] = useState(
+    storedUser.followers || 0
+  );
   const [reach, setReach] = useState(storedUser.reach || 0);
   const [pricePerReel, setPricePerReel] = useState(
     storedUser.pricePerReel || 0
   );
-  const [instagram, setInstagram] = useState(storedUser.instagram || "");
-  const [category, setCategory] = useState(storedUser.category || "");
+  const [instagram, setInstagram] = useState(
+    storedUser.instagram || ""
+  );
+  const [category, setCategory] = useState(
+    storedUser.category || ""
+  );
   const [engagementRate, setEngagementRate] = useState(
     storedUser.engagementRate || 0
   );
@@ -34,7 +45,6 @@ export default function Profile() {
       formData.append("bio", bio);
       formData.append("role", role);
 
-      // Influencer extra fields
       if (role === "influencer") {
         formData.append("followers", followers);
         formData.append("reach", reach);
@@ -49,7 +59,7 @@ export default function Profile() {
       }
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/users/update-profile`||"http://localhost:5000/api/users/update-profile",
+        `${API_URL}/users/update-profile`,
         {
           method: "PUT",
           headers: {
@@ -62,11 +72,18 @@ export default function Profile() {
       const data = await res.json();
 
       if (res.ok) {
+        // ✅ Update localStorage properly
         localStorage.setItem("user", JSON.stringify(data));
-        setProfilePic(data.profilePic); // ✅ FIXED FIELD
+
+        // ✅ Update UI instantly
+        setProfilePic(data.profilePic);
+
+        // ✅ Notify Navbar + Sidebar to refresh
+        window.dispatchEvent(new Event("userUpdated"));
+
         alert("Profile updated successfully 🚀");
       } else {
-        alert(data.message);
+        alert(data.message || "Update failed");
       }
     } catch (err) {
       console.error(err);
@@ -141,7 +158,9 @@ export default function Profile() {
                 <input
                   type="number"
                   value={followers}
-                  onChange={(e) => setFollowers(e.target.value)}
+                  onChange={(e) =>
+                    setFollowers(e.target.value)
+                  }
                   className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white"
                 />
               </div>
@@ -165,7 +184,9 @@ export default function Profile() {
                 <input
                   type="number"
                   value={pricePerReel}
-                  onChange={(e) => setPricePerReel(e.target.value)}
+                  onChange={(e) =>
+                    setPricePerReel(e.target.value)
+                  }
                   className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white"
                 />
               </div>
@@ -177,7 +198,9 @@ export default function Profile() {
                 <input
                   type="number"
                   value={engagementRate}
-                  onChange={(e) => setEngagementRate(e.target.value)}
+                  onChange={(e) =>
+                    setEngagementRate(e.target.value)
+                  }
                   className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white"
                 />
               </div>
@@ -190,7 +213,9 @@ export default function Profile() {
               <input
                 type="text"
                 value={instagram}
-                onChange={(e) => setInstagram(e.target.value)}
+                onChange={(e) =>
+                  setInstagram(e.target.value)
+                }
                 className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white"
               />
             </div>
@@ -202,7 +227,9 @@ export default function Profile() {
               <input
                 type="text"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) =>
+                  setCategory(e.target.value)
+                }
                 className="w-full p-3 rounded bg-gray-700 border border-gray-600 text-white"
               />
             </div>
